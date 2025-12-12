@@ -162,11 +162,13 @@ class RideCreateSerializer(serializers.ModelSerializer):
         Ensure the vehicle belongs to the driver.
         """
         user = self.context['request'].user
-        
-        if not hasattr(user, 'driver_profile'):
-            raise serializers.ValidationError(
-                'You must be a registered driver to create a ride.'
-            )
+        driver_profile = getattr(user, 'driver_profile', None)
+
+        if not driver_profile:
+            raise serializers.ValidationError('You must be a registered driver to create a ride.')
+
+        if not driver_profile.is_verified:
+            raise serializers.ValidationError('Your driver profile must be verified to create rides.')
         
         from apps.vehicles.models import Vehicle
         try:
@@ -174,7 +176,7 @@ class RideCreateSerializer(serializers.ModelSerializer):
         except Vehicle.DoesNotExist:
             raise serializers.ValidationError('Vehicle not found.')
         
-        if vehicle.driver != user.driver_profile:
+        if vehicle.driver != driver_profile:
             raise serializers.ValidationError(
                 'This vehicle does not belong to you.'
             )

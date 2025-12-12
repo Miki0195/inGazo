@@ -6,10 +6,36 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+import phonenumbers
 
 from apps.drivers.models import Driver
 
 User = get_user_model()
+
+def normalize_phone_number(value: str | None) -> str | None:
+    """
+    Normalize and validate phone numbers to E.164 format.
+    Requires the number to start with +countrycode and match the country's rules.
+    """
+    if value is None:
+        return value
+
+    value = value.strip()
+    if not value:
+        return value
+
+    if not value.startswith('+'):
+        raise serializers.ValidationError('Phone number must start with country code (e.g. +36...).')
+
+    try:
+        parsed = phonenumbers.parse(value, None)
+    except phonenumbers.NumberParseException as exc:
+        raise serializers.ValidationError(f'Invalid phone number: {exc}')
+
+    if not phonenumbers.is_valid_number(parsed):
+        raise serializers.ValidationError('Invalid phone number format or length for the country code.')
+
+    return phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164)
 
 
 class DriverInlineSerializer(serializers.ModelSerializer):
@@ -108,6 +134,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 'Either email or phone number is required.'
             )
 
+        phone_number = attrs.get('phone_number')
+        if phone_number:
+            attrs['phone_number'] = normalize_phone_number(phone_number)
+
         return attrs
 
     def create(self, validated_data):
@@ -128,13 +158,22 @@ class UserUpdateSerializer(serializers.ModelSerializer):
     """
     Serializer for updating user profile.
     """
+    phone_number = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+    )
 
     class Meta:
         model = User
         fields = [
+            'phone_number',
             'full_name',
             'profile_photo_url',
         ]
+
+    def validate_phone_number(self, value):
+        return normalize_phone_number(value)
 
 
 class ChangePasswordSerializer(serializers.Serializer):

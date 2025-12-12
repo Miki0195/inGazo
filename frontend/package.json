@@ -22,7 +22,8 @@
     "lucide-react": "^0.460.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.11.0",
-    "tailwind-merge": "^2.5.4"
+    "tailwind-merge": "^2.5.4",
+    "libphonenumber-js": "^1.11.7"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

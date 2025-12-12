@@ -91,6 +91,7 @@ class VehicleCreateSerializer(serializers.ModelSerializer):
         
         return Vehicle.objects.create(
             driver=user.driver_profile,
+            is_verified=True,
             **validated_data
         )
 

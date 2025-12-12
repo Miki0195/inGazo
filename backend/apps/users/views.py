@@ -65,6 +65,29 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+    def update(self, request, *args, **kwargs):
+        """
+        Ensure updates return the full user payload (including driver profile)
+        instead of the write serializer's limited fields. This prevents clients
+        from losing cached user data after partial updates.
+        """
+        partial = request.method == 'PATCH'
+        instance = self.get_object()
+
+        serializer = self.get_serializer(
+            instance,
+            data=request.data,
+            partial=partial,
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        read_serializer = UserSerializer(
+            instance,
+            context=self.get_serializer_context(),
+        )
+        return Response(read_serializer.data)
+
 
 class UserViewSet(ModelViewSet):
     """

@@ -29,6 +29,40 @@ export interface Driver {
   created_at: string;
 }
 
+// Vehicle types
+export interface Vehicle {
+  id: string;
+  make: string;
+  model: string;
+  year: number;
+  color: string;
+  color_display?: string;
+  license_plate: string;
+  seats: number;
+  photo_url?: string | null;
+  has_air_conditioning?: boolean;
+  has_wifi?: boolean;
+  has_usb_charger?: boolean;
+  trunk_space?: string | null;
+  is_active: boolean;
+  is_verified: boolean;
+  created_at?: string;
+}
+
+export interface CreateVehiclePayload {
+  make: string;
+  model: string;
+  year: number;
+  license_plate: string;
+  color: string;
+  seats: number;
+  photo_url?: string | null;
+  has_air_conditioning?: boolean;
+  has_wifi?: boolean;
+  has_usb_charger?: boolean;
+  trunk_space?: string;
+}
+
 export interface BecomeDriverData {
   license_number: string;
   license_expiry?: string;
@@ -42,6 +76,54 @@ export interface UpdateProfileData {
   full_name?: string;
   phone_number?: string;
   profile_photo_url?: string;
+}
+
+// Ride types
+export interface RideLocation {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Ride {
+  id: string;
+  driver: Driver | null;
+  vehicle: Vehicle;
+  departure_time: string;
+  seats_total: number;
+  seats_available: number;
+  start_location: RideLocation;
+  end_location: RideLocation;
+  start_city: string;
+  start_address: string;
+  end_city: string;
+  end_address: string;
+  price_per_seat: number;
+  estimated_duration_minutes?: number | null;
+  estimated_distance_km?: number | null;
+  status: string;
+  status_display?: string;
+  notes?: string;
+  allows_detours: boolean;
+  instant_booking: boolean;
+  created_at: string;
+}
+
+export interface CreateRidePayload {
+  vehicle_id: string;
+  departure_time: string;
+  seats_total: number;
+  start_location: RideLocation;
+  end_location: RideLocation;
+  start_city: string;
+  start_address?: string;
+  end_city: string;
+  end_address?: string;
+  price_per_seat: number;
+  estimated_duration_minutes?: number | null;
+  estimated_distance_km?: number | null;
+  notes?: string;
+  allows_detours: boolean;
+  instant_booking: boolean;
 }
 
 // Auth types

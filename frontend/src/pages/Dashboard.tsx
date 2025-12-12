@@ -14,6 +14,7 @@ import {
   UserPlus,
   Star,
   Shield,
+  AlertCircle,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button, Card } from '@/components/common';
@@ -230,7 +231,7 @@ export const Dashboard: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20">
-                    <Shield className="h-7 w-7 text-white" />
+                    <AlertCircle className="h-7 w-7 text-white" />
                   </div>
                   <div className="text-center sm:text-left">
                     <h3 className="text-lg font-semibold">
@@ -251,8 +252,8 @@ export const Dashboard: React.FC = () => {
           </motion.div>
         )}
 
-        {/* Driver Stats (if driver and verified) */}
-        {isDriver && user?.driver_profile && user.driver_profile.is_verified && (
+        {/* Driver Stats (if driver and verified and active) */}
+        {isDriver && user?.driver_profile && user.driver_profile.is_verified && user.driver_profile.is_active &&(
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -263,7 +264,7 @@ export const Dashboard: React.FC = () => {
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-white/20">
-                    <Shield className="h-7 w-7 text-white" />
+                    <Car className="h-7 w-7 text-white" />
                   </div>
                   <div className="text-center sm:text-left">
                     <div className="flex items-center gap-2">

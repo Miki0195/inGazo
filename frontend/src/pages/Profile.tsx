@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import { parsePhoneNumberFromString } from 'libphonenumber-js';
 import {
   User,
   Mail,
@@ -20,12 +21,15 @@ import {
   Edit3,
   Save,
   X,
+  AlertCircle,
+  Trash2,
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { Button, Card, Drawer, Input } from '@/components/common';
+import { Button, Card, Drawer, Input, Modal } from '@/components/common';
 import { authService } from '@/services/auth';
 import { driverService } from '@/services/driver';
-import { UpdateProfileData } from '@/types';
+import { vehicleService } from '@/services';
+import { UpdateProfileData, Vehicle, CreateVehiclePayload } from '@/types';
 
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
@@ -46,10 +50,18 @@ export const Profile: React.FC = () => {
   const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [profileError, setProfileError] = useState('');
   const [isDriverActionLoading, setIsDriverActionLoading] = useState(false);
   const [isDriverDrawerOpen, setIsDriverDrawerOpen] = useState(false);
   const [driverFormLoading, setDriverFormLoading] = useState(false);
   const [driverError, setDriverError] = useState('');
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [vehiclesLoading, setVehiclesLoading] = useState(false);
+  const [vehicleDrawerOpen, setVehicleDrawerOpen] = useState(false);
+  const [vehicleFormLoading, setVehicleFormLoading] = useState(false);
+  const [vehicleError, setVehicleError] = useState('');
+  const [vehicleDeleteId, setVehicleDeleteId] = useState<string | null>(null);
+  const [vehicleDeleteLoading, setVehicleDeleteLoading] = useState(false);
   const [formData, setFormData] = useState<UpdateProfileData>({
     full_name: user?.full_name || '',
     phone_number: user?.phone_number || '',
@@ -57,6 +69,7 @@ export const Profile: React.FC = () => {
 
   const isDriver = !!user?.driver_profile;
   const driverProfile = user?.driver_profile;
+  const vehicleList = Array.isArray(vehicles) ? vehicles : (vehicles as any)?.results ?? [];
 
   type DriverFormState = {
     license_number: string;
@@ -78,6 +91,34 @@ export const Profile: React.FC = () => {
     is_active: driverProfile?.is_active ?? false,
   });
 
+  type VehicleFormState = {
+    make: string;
+    model: string;
+    year: string;
+    license_plate: string;
+    color: string;
+    seats: string;
+    photo_url: string;
+    has_air_conditioning: boolean;
+    has_wifi: boolean;
+    has_usb_charger: boolean;
+    trunk_space: string;
+  };
+
+  const [vehicleForm, setVehicleForm] = useState<VehicleFormState>({
+    make: '',
+    model: '',
+    year: '',
+    license_plate: '',
+    color: 'other',
+    seats: '4',
+    photo_url: '',
+    has_air_conditioning: false,
+    has_wifi: false,
+    has_usb_charger: false,
+    trunk_space: 'medium',
+  });
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -85,12 +126,44 @@ export const Profile: React.FC = () => {
 
   const handleSave = async () => {
     setIsLoading(true);
+    setProfileError('');
     try {
-      const updatedUser = await authService.updateProfile(formData);
-      updateUser(updatedUser);
+      const payload = { ...formData };
+
+      if (payload.phone_number) {
+        const parsed = parsePhoneNumberFromString(payload.phone_number);
+        if (!parsed || !parsed.isValid()) {
+          setProfileError(
+            t('profile.personalInfo.phoneInvalid', {
+              defaultValue: 'Invalid phone number. Include country code.',
+            })
+          );
+
+          //Redo this
+          // setTimeout(() => {
+          //   setProfileError('');
+          // }, 3000);
+          return;
+        }
+        payload.phone_number = parsed.number;
+      }
+
+      await authService.updateProfile(payload);
+      const refreshedUser = await authService.getProfile();
+      updateUser(refreshedUser);
       setIsEditing(false);
     } catch (error) {
       console.error('Failed to update profile:', error);
+      setProfileError(
+        t('profile.personalInfo.updateError', {
+          defaultValue: 'Failed to update profile. Please try again.',
+        })
+      );
+
+      //Redo this
+      // setTimeout(() => {
+      //   setProfileError('');
+      // }, 3000);
     } finally {
       setIsLoading(false);
     }
@@ -159,6 +232,23 @@ export const Profile: React.FC = () => {
     }
   }, [driverProfile, isDriverDrawerOpen]);
 
+  useEffect(() => {
+    const loadVehicles = async () => {
+      if (!isDriver) return;
+      setVehiclesLoading(true);
+      try {
+        const data = await vehicleService.getMyVehicles();
+        setVehicles(data);
+      } catch {
+        // Swallow for now; UI will show empty state.
+      } finally {
+        setVehiclesLoading(false);
+      }
+    };
+
+    loadVehicles();
+  }, [isDriver]);
+
   const handleDriverInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -173,6 +263,91 @@ export const Profile: React.FC = () => {
       ...prev,
       [key]: !prev[key],
     }));
+  };
+
+  const handleVehicleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target as HTMLInputElement;
+    const checked = (e.target as HTMLInputElement).checked;
+    setVehicleForm((prev) => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const handleVehicleSubmit = async () => {
+    setVehicleError('');
+    setVehicleFormLoading(true);
+    try {
+      const payload: CreateVehiclePayload = {
+        make: vehicleForm.make,
+        model: vehicleForm.model,
+        year: Number(vehicleForm.year),
+        license_plate: vehicleForm.license_plate,
+        color: vehicleForm.color,
+        seats: Number(vehicleForm.seats),
+        photo_url: vehicleForm.photo_url || undefined,
+        has_air_conditioning: vehicleForm.has_air_conditioning,
+        has_wifi: vehicleForm.has_wifi,
+        has_usb_charger: vehicleForm.has_usb_charger,
+        trunk_space: vehicleForm.trunk_space,
+      };
+
+      await vehicleService.createVehicle(payload);
+      const data = await vehicleService.getMyVehicles();
+      setVehicles(data);
+      setVehicleDrawerOpen(false);
+      setVehicleForm({
+        make: '',
+        model: '',
+        year: '',
+        license_plate: '',
+        color: 'other',
+        seats: '4',
+        photo_url: '',
+        has_air_conditioning: true,
+        has_wifi: false,
+        has_usb_charger: false,
+        trunk_space: 'medium',
+      });
+    } catch (err: unknown) {
+      const detail = (err as { response?: { data?: { detail?: string } } }).response?.data?.detail;
+      setVehicleError(
+        detail ||
+          t('profile.vehicle.createError', {
+            defaultValue: 'Failed to add vehicle. Please check the details.',
+          })
+      );
+    } finally {
+      setVehicleFormLoading(false);
+    }
+  };
+
+  const handleVehicleDelete = (id: string) => {
+    setVehicleError('');
+    setVehicleDeleteId(id);
+  };
+
+  const confirmVehicleDelete = async () => {
+    if (!vehicleDeleteId) return;
+    setVehicleDeleteLoading(true);
+    setVehicleError('');
+    try {
+      await vehicleService.deleteVehicle(vehicleDeleteId);
+      const data = await vehicleService.getMyVehicles();
+      setVehicles(data);
+      setVehicleDeleteId(null);
+    } catch (err: unknown) {
+      const detail = (err as { response?: { data?: { detail?: string } } }).response?.data?.detail;
+      setVehicleError(
+        detail ||
+          t('profile.vehicle.deleteError', {
+            defaultValue: 'Failed to delete vehicle. Please try again.',
+          })
+      );
+      setVehicleDeleteId(null);
+    } finally {
+      setVehicleDeleteLoading(false);
+    }
   };
 
   const handleDriverSubmit = async () => {
@@ -340,6 +515,12 @@ export const Profile: React.FC = () => {
                 )}
               </div>
 
+              {profileError && (
+                <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  {profileError}
+                </div>
+              )}
+
               <div className="space-y-4">
                 {isEditing ? (
                   <>
@@ -435,7 +616,11 @@ export const Profile: React.FC = () => {
                     {/* Driver Status */}
                     <div className={`flex items-center justify-between p-4 rounded-xl border ${driverProfile.is_active ? 'bg-green-50 border-green-200' : 'bg-yellow-50 border-yellow-200'}`}>
                       <div className="flex items-center gap-3">
-                        <CheckCircle2 className={`h-6 w-6 ${driverProfile.is_active ? 'text-green-600' : 'text-yellow-600'}`} />
+                        {driverProfile.is_active ? (
+                          <CheckCircle2 className="h-6 w-6 text-green-600" />
+                        ) : (
+                          <AlertCircle className="h-6 w-6 text-yellow-600" />
+                        )}
                         <div>
                           <p className={`font-medium ${driverProfile.is_active ? 'text-green-900' : 'text-yellow-900'}`}>
                             {driverProfile.is_active ? t('profile.driver.active') : t('profile.driver.inactive')}
@@ -484,6 +669,68 @@ export const Profile: React.FC = () => {
                         <span className="text-sm text-center text-secondary-700">{t('profile.driver.luggage')}</span>
                       </div>
                     </div>
+
+                    {/* Vehicles */}
+                    <Card className="bg-secondary-50 border-secondary-200">
+                      <div className="flex items-center justify-between mb-4">
+                        <div>
+                          <p className="text-lg font-semibold text-secondary-900">
+                            {t('profile.vehicle.title', { defaultValue: 'Vehicles' })}
+                          </p>
+                          <p className="text-sm text-secondary-600">
+                            {t('profile.vehicle.subtitle', { defaultValue: 'Add vehicles to use for rides.' })}
+                          </p>
+                        </div>
+                        <Button variant="primary" size="sm" onClick={() => setVehicleDrawerOpen(true)}>
+                          {t('profile.vehicle.add', { defaultValue: 'Add vehicle' })}
+                        </Button>
+                      </div>
+
+                      {vehiclesLoading ? (
+                        <div className="text-sm text-secondary-600">{t('common.loading')}</div>
+                      ) : vehicleList.length === 0 ? (
+                        <div className="rounded-lg border border-secondary-200 bg-white px-4 py-3 text-sm text-secondary-700">
+                          {t('profile.vehicle.none', { defaultValue: 'No active vehicles found. Add one to continue.' })}
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {vehicleList.map((v) => (
+                            <div
+                              key={v.id}
+                              className="flex items-center justify-between rounded-lg border border-secondary-200 bg-white px-4 py-3"
+                            >
+                              <div>
+                                <p className="font-medium text-secondary-900">
+                                  {v.year} {v.make} {v.model}
+                                </p>
+                                <p className="text-sm text-secondary-600">
+                                  {v.license_plate} • {v.seats} {t('profile.vehicle.seats', { defaultValue: 'seats' })}
+                                </p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={`rounded-full px-2 py-1 text-xs font-medium ${
+                                    v.is_active ? 'bg-primary-100 text-primary-700' : 'bg-secondary-200 text-secondary-700'
+                                  }`}
+                                >
+                                  {v.is_active
+                                    ? t('profile.vehicle.active', { defaultValue: 'Active' })
+                                    : t('profile.vehicle.inactive', { defaultValue: 'Inactive' })}
+                                </span>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleVehicleDelete(v.id)}
+                                  className="text-red-600 hover:text-red-700"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </Card>
                   </div>
                 ) : (
                   <div className="text-center py-8">
@@ -691,6 +938,168 @@ export const Profile: React.FC = () => {
           </div>
         )}
       </Drawer>
+
+      {/* Vehicle management drawer */}
+      <Drawer
+        isOpen={vehicleDrawerOpen}
+        onClose={() => setVehicleDrawerOpen(false)}
+        title={t('profile.vehicle.drawerTitle', { defaultValue: 'Add vehicle' })}
+        widthClass="max-w-2xl"
+        footer={
+          <div className="flex items-center justify-end gap-3">
+            <Button variant="ghost" onClick={() => setVehicleDrawerOpen(false)}>
+              {t('common.cancel')}
+            </Button>
+            <Button variant="primary" onClick={handleVehicleSubmit} isLoading={vehicleFormLoading}>
+              {t('profile.vehicle.save', { defaultValue: 'Save vehicle' })}
+            </Button>
+          </div>
+        }
+      >
+        {vehicleError && (
+          <div className="mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            {vehicleError}
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Input
+            label={t('profile.vehicle.make', { defaultValue: 'Make' })}
+            name="make"
+            value={vehicleForm.make}
+            onChange={handleVehicleChange}
+            required
+          />
+          <Input
+            label={t('profile.vehicle.model', { defaultValue: 'Model' })}
+            name="model"
+            value={vehicleForm.model}
+            onChange={handleVehicleChange}
+            required
+          />
+          <Input
+            label={t('profile.vehicle.year', { defaultValue: 'Year' })}
+            name="year"
+            type="number"
+            min={1990}
+            max={new Date().getFullYear() + 1}
+            value={vehicleForm.year}
+            onChange={handleVehicleChange}
+            required
+          />
+          <Input
+            label={t('profile.vehicle.licensePlate', { defaultValue: 'License plate' })}
+            name="license_plate"
+            value={vehicleForm.license_plate}
+            onChange={handleVehicleChange}
+            required
+          />
+          <div>
+            <label className="block text-sm font-medium text-secondary-700 mb-2">
+              {t('profile.vehicle.color', { defaultValue: 'Color' })}
+            </label>
+            <select
+              name="color"
+              value={vehicleForm.color}
+              onChange={handleVehicleChange}
+              className="w-full rounded-xl border border-secondary-300 px-3 py-2.5 text-secondary-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            >
+              <option value="black">{t('profile.vehicle.colors.black', { defaultValue: 'Black' })}</option>
+              <option value="white">{t('profile.vehicle.colors.white', { defaultValue: 'White' })}</option>
+              <option value="silver">{t('profile.vehicle.colors.silver', { defaultValue: 'Silver' })}</option>
+              <option value="gray">{t('profile.vehicle.colors.gray', { defaultValue: 'Gray' })}</option>
+              <option value="red">{t('profile.vehicle.colors.red', { defaultValue: 'Red' })}</option>
+              <option value="blue">{t('profile.vehicle.colors.blue', { defaultValue: 'Blue' })}</option>
+              <option value="green">{t('profile.vehicle.colors.green', { defaultValue: 'Green' })}</option>
+              <option value="yellow">{t('profile.vehicle.colors.yellow', { defaultValue: 'Yellow' })}</option>
+              <option value="brown">{t('profile.vehicle.colors.brown', { defaultValue: 'Brown' })}</option>
+              <option value="orange">{t('profile.vehicle.colors.orange', { defaultValue: 'Orange' })}</option>
+              <option value="other">{t('profile.vehicle.colors.other', { defaultValue: 'Other' })}</option>
+            </select>
+          </div>
+          <Input
+            label={t('profile.vehicle.seatsLabel', { defaultValue: 'Seats' })}
+            name="seats"
+            type="number"
+            min={1}
+            max={9}
+            value={vehicleForm.seats}
+            onChange={handleVehicleChange}
+            required
+          />
+          <Input
+            label={t('profile.vehicle.photo', { defaultValue: 'Photo URL (optional)' })}
+            name="photo_url"
+            value={vehicleForm.photo_url}
+            onChange={handleVehicleChange}
+          />
+          <div>
+            <label className="block text-sm font-medium text-secondary-700 mb-2">
+              {t('profile.vehicle.trunk', { defaultValue: 'Trunk space' })}
+            </label>
+            <select
+              name="trunk_space"
+              value={vehicleForm.trunk_space}
+              onChange={handleVehicleChange}
+              className="w-full rounded-xl border border-secondary-300 px-3 py-2.5 text-secondary-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20"
+            >
+              <option value="small">{t('profile.vehicle.trunkOptions.small', { defaultValue: 'Small' })}</option>
+              <option value="medium">{t('profile.vehicle.trunkOptions.medium', { defaultValue: 'Medium' })}</option>
+              <option value="large">{t('profile.vehicle.trunkOptions.large', { defaultValue: 'Large' })}</option>
+            </select>
+          </div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-3 mt-4">
+          {[
+            {
+              name: 'has_air_conditioning',
+              label: t('profile.vehicle.airConditioning', { defaultValue: 'Air conditioning' }),
+            },
+            {
+              name: 'has_wifi',
+              label: t('profile.vehicle.wifi', { defaultValue: 'WiFi' }),
+            },
+            {
+              name: 'has_usb_charger',
+              label: t('profile.vehicle.usb', { defaultValue: 'USB charger' }),
+            },
+          ].map((item) => (
+            <label
+              key={item.name}
+              className="flex items-center gap-3 rounded-xl border border-secondary-200 bg-white px-4 py-3 cursor-pointer hover:border-primary-200 transition"
+            >
+              <input
+                type="checkbox"
+                name={item.name}
+                checked={(vehicleForm as any)[item.name]}
+                onChange={handleVehicleChange}
+                className="h-4 w-4 text-primary-600 rounded border-secondary-300 focus:ring-primary-500"
+              />
+              <span className="text-sm text-secondary-900">{item.label}</span>
+            </label>
+          ))}
+        </div>
+      </Drawer>
+
+      {/* Vehicle delete confirmation */}
+      <Modal
+        isOpen={!!vehicleDeleteId}
+        onClose={() => setVehicleDeleteId(null)}
+        title={t('profile.vehicle.deleteTitle', { defaultValue: 'Delete vehicle' })}
+        description={t('profile.vehicle.deleteConfirm', { defaultValue: 'Are you sure you want to delete this vehicle?' })}
+        primaryAction={{
+          label: t('common.delete', { defaultValue: 'Delete' }),
+          onClick: confirmVehicleDelete,
+          isLoading: vehicleDeleteLoading,
+          variant: 'primary',
+        }}
+        secondaryAction={{
+          label: t('common.cancel'),
+          onClick: () => setVehicleDeleteId(null),
+          variant: 'ghost',
+        }}
+      />
     </div>
   );
 };

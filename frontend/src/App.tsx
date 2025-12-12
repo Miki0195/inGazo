@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Layout } from '@/components/layout';
 import { ProtectedRoute } from '@/components/auth';
-import { Home, Login, Register, Dashboard, Profile, BecomeDriver } from '@/pages';
+import { Home, Login, Register, Dashboard, Profile, BecomeDriver, OfferRide } from '@/pages';
 
 const App: React.FC = () => {
   return (
@@ -31,6 +31,14 @@ const App: React.FC = () => {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/rides/create"
+          element={
+            <ProtectedRoute>
+              <OfferRide />
             </ProtectedRoute>
           }
         />

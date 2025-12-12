@@ -11,7 +11,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from apps.drivers.permissions import IsDriver
+from apps.drivers.permissions import IsDriver, IsVerifiedDriver
 
 from .models import Ride, RideRecurring, RideStop
 from .permissions import IsRideOwner, IsRideOwnerOrReadOnly
@@ -48,9 +48,9 @@ class RideViewSet(ModelViewSet):
         if self.action in ['list', 'retrieve', 'search']:
             return [permissions.IsAuthenticated()]
         elif self.action == 'create':
-            return [permissions.IsAuthenticated(), IsDriver()]
+            return [permissions.IsAuthenticated(), IsVerifiedDriver()]
         elif self.action in ['update', 'partial_update', 'destroy']:
-            return [permissions.IsAuthenticated(), IsRideOwnerOrReadOnly()]
+            return [permissions.IsAuthenticated(), IsVerifiedDriver(), IsRideOwnerOrReadOnly()]
         return [permissions.IsAuthenticated()]
 
     def get_queryset(self):
