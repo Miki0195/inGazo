@@ -1,0 +1,275 @@
+{
+  "common": {
+    "appName": "InGazo",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "search": "Search",
+    "noResults": "No results found",
+    "or": "or"
+  },
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "login": "Log In",
+    "register": "Sign Up",
+    "logout": "Log Out",
+    "profile": "Profile"
+  },
+  "profile": {
+    "verified": "Verified",
+    "driver": "Driver",
+    "stats": {
+      "trips": "Trips",
+      "rating": "Rating",
+      "reviews": "Reviews"
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "memberSince": "Member Since"
+    },
+    "driver": {
+      "label": "Driver",
+      "title": "Driver Status",
+      "active": "You are a driver",
+      "activeDesc": "You can offer rides to other commuters",
+      "inactive": "Driver mode paused",
+      "inactiveDesc": "You won't appear in ride offers until you re-activate.",
+      "activate": "Activate",
+      "pause": "Pause",
+      "underReview": {
+        "title": "Verification Required",
+        "desc": "Thanks for applying! We’re reviewing your driver profile. This usually takes 1-2 business days.",
+        "note": "You’ll get notified once verification is complete."
+      },
+      "verified": "Verified",
+      "bio": "About you",
+      "smoking": "Smoking",
+      "pets": "Pets",
+      "luggage": "Luggage",
+      "becomeTitle": "Become a Driver",
+      "becomeDesc": "Start earning by sharing your commute. Offer rides to passengers traveling the same route.",
+      "becomeButton": "Start Driving",
+      "manage": {
+        "title": "Manage driver profile",
+        "button": "Manage driver profile",
+        "licenseNumber": "License number",
+        "licenseExpiry": "License expiry",
+        "bio": "Bio",
+        "bioPlaceholder": "Tell riders a bit about you",
+        "preferences": "Preferences",
+        "smokingTitle": "Smoking",
+        "smokingDesc": "Allow smoking-friendly rides",
+        "petsTitle": "Pets",
+        "petsDesc": "Allow pets on board",
+        "luggageTitle": "Luggage",
+        "luggageDesc": "Allow larger bags",
+        "activeTitle": "Active status",
+        "activeDesc": "Toggle visibility for receiving ride requests",
+        "activeLocked": "enabled after verification",
+        "updateError": "Failed to update driver profile."
+      }
+    },
+    "security": {
+      "title": "Security",
+      "changePassword": "Change Password",
+      "twoFactor": "Two-Factor Authentication"
+    }
+  },
+  "becomeDriver": {
+    "title": "Become a Driver",
+    "subtitle": "Share your commute and earn money",
+    "submit": "Become a Driver",
+    "steps": {
+      "license": {
+        "title": "License Information",
+        "subtitle": "Enter your driver's license details"
+      },
+      "preferences": {
+        "title": "Your Preferences",
+        "subtitle": "Set your driving preferences"
+      },
+      "confirm": {
+        "title": "Confirm Details",
+        "subtitle": "Review your information before submitting"
+      }
+    },
+    "fields": {
+      "licenseNumber": "License Number",
+      "licenseExpiry": "License Expiry Date",
+      "bio": "About You",
+      "bioPlaceholder": "Tell passengers a bit about yourself..."
+    },
+    "preferences": {
+      "smoking": {
+        "title": "Smoking Allowed",
+        "desc": "Passengers can smoke in your vehicle"
+      },
+      "pets": {
+        "title": "Pets Allowed",
+        "desc": "Passengers can bring pets"
+      },
+      "luggage": {
+        "title": "Luggage Allowed",
+        "desc": "Passengers can bring large luggage"
+      }
+    },
+    "summary": {
+      "title": "Summary",
+      "preferences": "Preferences"
+    },
+    "verification": {
+      "title": "Verification Required",
+      "desc": "Your profile will be reviewed by our team. This usually takes 1-2 business days."
+    },
+    "errors": {
+      "licenseRequired": "License number is required",
+      "licenseExpiry": "License expiry date is requiered",
+      "failed": "Failed to create driver profile. Please try again."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Carpooling Made Simple",
+      "subtitle": "Connect with commuters traveling between Hungary and Austria. Save money, reduce emissions, and make new friends.",
+      "cta": "Get Started",
+      "secondaryCta": "Learn More"
+    },
+    "features": {
+      "title": "Why Choose InGazo?",
+      "subtitle": "The smartest way to commute across borders",
+      "costSaving": {
+        "title": "Save Money",
+        "description": "Share travel costs and save up to 75% on your daily commute."
+      },
+      "ecoFriendly": {
+        "title": "Eco-Friendly",
+        "description": "Reduce your carbon footprint by sharing rides with others."
+      },
+      "community": {
+        "title": "Build Community",
+        "description": "Meet new people and build lasting connections on your commute."
+      },
+      "safety": {
+        "title": "Safe & Verified",
+        "description": "All users are verified for a secure carpooling experience."
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "step1": {
+        "title": "Create an Account",
+        "description": "Sign up in minutes with your email or phone number."
+      },
+      "step2": {
+        "title": "Find or Offer a Ride",
+        "description": "Search for available rides or post your own journey."
+      },
+      "step3": {
+        "title": "Travel Together",
+        "description": "Meet your carpool partners and enjoy the ride!"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account to continue",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "submit": "Sign In",
+      "forgotPassword": "Forgot password?",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "errors": {
+        "invalidCredentials": "Invalid email or password",
+        "required": "This field is required",
+        "invalidEmail": "Please enter a valid email address"
+      }
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join thousands of commuters saving money and the planet",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Enter your full name",
+      "email": "Email Address",
+      "emailPlaceholder": "Enter your email",
+      "phoneNumber": "Phone Number (optional)",
+      "phoneNumberPlaceholder": "+36 XX XXX XXXX",
+      "password": "Password",
+      "passwordPlaceholder": "Create a strong password",
+      "passwordConfirm": "Confirm Password",
+      "passwordConfirmPlaceholder": "Confirm your password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "errors": {
+        "required": "This field is required",
+        "invalidEmail": "Please enter a valid email address",
+        "passwordMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 8 characters",
+        "emailOrPhoneRequired": "Email or phone number is required"
+      },
+      "success": "Account created successfully! Please log in."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome back, {{name}}!",
+    "quickActions": {
+      "title": "Quick Actions",
+      "findRide": "Find a Ride",
+      "offerRide": "Offer a Ride",
+      "myRides": "My Rides",
+      "messages": "Messages",
+      "becomeDriver": "Become a Driver",
+      "becomeDriverHint": "Start earning by sharing rides"
+    },
+    "driverBanner": {
+      "title": "Want to offer rides?",
+      "subtitle": "Become a driver and start earning while commuting",
+      "cta": "Become a Driver"
+    },
+    "driverStatus": {
+      "title": "Driver Mode Active",
+      "verified": "Verified",
+      "trips": "trips",
+      "underReviewTitle": "Driver application under review",
+      "underReviewDesc": "We’re checking your documents. You’ll be notified once verified.",
+      "inactiveTitle": "Driver mode is paused",
+      "inactiveDesc": "Reactivate to offer rides and appear in search."
+    },
+    "stats": {
+      "ridesCompleted": "Rides Completed",
+      "moneySaved": "Money Saved",
+      "co2Saved": "CO₂ Saved"
+    },
+    "upcomingRides": {
+      "title": "Upcoming Rides",
+      "empty": "No upcoming rides. Find or offer a ride to get started!"
+    }
+  },
+  "footer": {
+    "tagline": "Carpooling for Hungary ⇆ Austria commuters",
+    "copyright": "© {{year}} InGazo. All rights reserved."
+  },
+  "language": {
+    "select": "Select Language",
+    "en": "English",
+    "hu": "Magyar",
+    "de": "Deutsch"
+  }
+}

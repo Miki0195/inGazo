@@ -1,0 +1,157 @@
+services:
+  # PostgreSQL with PostGIS (ARM64 native for Apple Silicon)
+  db:
+    image: kartoza/postgis:15-3.4
+    container_name: ingazo_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ingazo}
+      POSTGRES_USER: ${POSTGRES_USER:-ingazo}
+      POSTGRES_PASS: ${POSTGRES_PASSWORD:-ingazo_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ingazo} -d ${POSTGRES_DB:-ingazo}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+      - ingazo_network
+
+  # Redis for caching and Celery
+  redis:
+    image: redis:7-alpine
+    container_name: ingazo_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ingazo_network
+
+  # Django Backend
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: ingazo_backend
+    restart: unless-stopped
+    environment:
+      - DJANGO_ENVIRONMENT=${DJANGO_ENVIRONMENT:-dev}
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-dev-key-change-in-production}
+      - DEBUG=${DEBUG:-True}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,0.0.0.0}
+      - POSTGRES_DB=${POSTGRES_DB:-ingazo}
+      - POSTGRES_USER=${POSTGRES_USER:-ingazo}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ingazo_secret}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ingazo_network
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             python manage.py runserver 0.0.0.0:8000"
+
+  # Celery Worker (for async tasks)
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: ingazo_celery_worker
+    restart: unless-stopped
+    environment:
+      - DJANGO_ENVIRONMENT=${DJANGO_ENVIRONMENT:-dev}
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-dev-key-change-in-production}
+      - DEBUG=${DEBUG:-True}
+      - POSTGRES_DB=${POSTGRES_DB:-ingazo}
+      - POSTGRES_USER=${POSTGRES_USER:-ingazo}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ingazo_secret}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ingazo_network
+    command: celery -A core worker -l INFO
+
+  # Celery Beat (for scheduled tasks)
+  celery_beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    container_name: ingazo_celery_beat
+    restart: unless-stopped
+    environment:
+      - DJANGO_ENVIRONMENT=${DJANGO_ENVIRONMENT:-dev}
+      - SECRET_KEY=${SECRET_KEY:-django-insecure-dev-key-change-in-production}
+      - DEBUG=${DEBUG:-True}
+      - POSTGRES_DB=${POSTGRES_DB:-ingazo}
+      - POSTGRES_USER=${POSTGRES_USER:-ingazo}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ingazo_secret}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - ingazo_network
+    command: celery -A core beat -l INFO
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  static_volume:
+    driver: local
+  media_volume:
+    driver: local
+
+networks:
+  ingazo_network:
+    driver: bridge
+

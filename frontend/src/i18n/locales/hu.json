@@ -1,0 +1,275 @@
+{
+  "common": {
+    "appName": "InGazo",
+    "loading": "Betöltés...",
+    "error": "Hiba történt",
+    "success": "Sikeres",
+    "cancel": "Mégse",
+    "save": "Mentés",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "close": "Bezárás",
+    "back": "Vissza",
+    "next": "Következő",
+    "submit": "Küldés",
+    "search": "Keresés",
+    "noResults": "Nincs találat",
+    "or": "vagy"
+  },
+  "nav": {
+    "home": "Főoldal",
+    "dashboard": "Irányítópult",
+    "login": "Bejelentkezés",
+    "register": "Regisztráció",
+    "logout": "Kijelentkezés",
+    "profile": "Profil"
+  },
+  "profile": {
+    "verified": "Ellenőrzött",
+    "driver": "Sofőr",
+    "stats": {
+      "trips": "Utak",
+      "rating": "Értékelés",
+      "reviews": "Vélemények"
+    },
+    "personalInfo": {
+      "title": "Személyes adatok",
+      "fullName": "Teljes név",
+      "email": "E-mail cím",
+      "phone": "Telefonszám",
+      "memberSince": "Tag óta"
+    },
+    "driver": {
+      "label": "Sofőr",
+      "title": "Sofőr státusz",
+      "active": "Sofőr vagy",
+      "activeDesc": "Utakat ajánlhatsz más ingázóknak",
+      "inactive": "Sofőr mód szünetel",
+      "inactiveDesc": "Nem jelensz meg az ajánlatok között, amíg újra nem aktiválod.",
+      "activate": "Aktiválás",
+      "pause": "Szünet",
+      "underReview": {
+        "title": "Ellenőrzés alatt",
+        "desc": "Köszönjük a jelentkezést! Ellenőrizzük a sofőr profilod, ez általában 1-2 munkanap.",
+        "note": "Értesítünk, amint kész a jóváhagyás."
+      },
+      "verified": "Ellenőrzött",
+      "bio": "Rólad",
+      "smoking": "Dohányzás",
+      "pets": "Háziállatok",
+      "luggage": "Csomag",
+      "becomeTitle": "Legyél sofőr",
+      "becomeDesc": "Kezdj el keresni az ingázásod megosztásával. Ajánlj utakat azonos útvonalon utazóknak.",
+      "becomeButton": "Sofőr leszek",
+      "manage": {
+        "title": "Sofőr profil kezelése",
+        "button": "Sofőr profil kezelése",
+        "licenseNumber": "Jogosítvány szám",
+        "licenseExpiry": "Jogosítvány lejárat",
+        "bio": "Rólad",
+        "bioPlaceholder": "Mesélj pár szót magadról az utasoknak",
+        "preferences": "Preferenciák",
+        "smokingTitle": "Dohányzás",
+        "smokingDesc": "Dohányzás engedélyezése",
+        "petsTitle": "Háziállatok",
+        "petsDesc": "Háziállatok engedélyezése",
+        "luggageTitle": "Csomag",
+        "luggageDesc": "Nagyobb csomag engedélyezése",
+        "activeTitle": "Aktív státusz",
+        "activeDesc": "Láthatóság kapcsolása a fuvarokhoz",
+        "activeLocked": "ellenőrzés után engedélyezett",
+        "updateError": "Nem sikerült frissíteni a sofőr profilt."
+      }
+    },
+    "security": {
+      "title": "Biztonság",
+      "changePassword": "Jelszó módosítása",
+      "twoFactor": "Kétfaktoros hitelesítés"
+    }
+  },
+  "becomeDriver": {
+    "title": "Legyél sofőr",
+    "subtitle": "Oszd meg az ingázásod és keress pénzt",
+    "submit": "Sofőr leszek",
+    "steps": {
+      "license": {
+        "title": "Jogosítvány adatok",
+        "subtitle": "Add meg a jogosítványod adatait"
+      },
+      "preferences": {
+        "title": "Preferenciáid",
+        "subtitle": "Állítsd be a vezetési preferenciáidat"
+      },
+      "confirm": {
+        "title": "Adatok megerősítése",
+        "subtitle": "Ellenőrizd az adataidat a küldés előtt"
+      }
+    },
+    "fields": {
+      "licenseNumber": "Jogosítvány szám",
+      "licenseExpiry": "Jogosítvány lejárat",
+      "bio": "Rólad",
+      "bioPlaceholder": "Mesélj egy kicsit magadról az utasoknak..."
+    },
+    "preferences": {
+      "smoking": {
+        "title": "Dohányzás engedélyezett",
+        "desc": "Utasok dohányozhatnak a járművedben"
+      },
+      "pets": {
+        "title": "Háziállatok engedélyezettek",
+        "desc": "Utasok hozhatnak háziállatot"
+      },
+      "luggage": {
+        "title": "Csomag engedélyezett",
+        "desc": "Utasok hozhatnak nagy csomagot"
+      }
+    },
+    "summary": {
+      "title": "Összefoglaló",
+      "preferences": "Preferenciák"
+    },
+    "verification": {
+      "title": "Ellenőrzés szükséges",
+      "desc": "Profilodat csapatunk ellenőrzi. Ez általában 1-2 munkanapot vesz igénybe."
+    },
+    "errors": {
+      "licenseRequired": "Jogosítvány szám megadása kötelező",
+      "licenseExpiry": "Jogosítvány lejárat dátum megadása kötelező",
+      "failed": "Nem sikerült létrehozni a sofőr profilt. Kérjük, próbáld újra."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Egyszerű Telekocsi",
+      "subtitle": "Csatlakozz a Magyarország és Ausztria között ingázókhoz. Spórolj pénzt, csökkentsd a környezetszennyezést és ismerj meg új embereket.",
+      "cta": "Kezdés",
+      "secondaryCta": "Tudj meg többet"
+    },
+    "features": {
+      "title": "Miért válaszd az InGazót?",
+      "subtitle": "A legokosabb módja a határokon átívelő ingázásnak",
+      "costSaving": {
+        "title": "Spórolj pénzt",
+        "description": "Oszd meg az utazási költségeket és spórolj akár 75%-ot a napi ingázáson."
+      },
+      "ecoFriendly": {
+        "title": "Környezetbarát",
+        "description": "Csökkentsd a szénlábnyomodat a közös utazással."
+      },
+      "community": {
+        "title": "Közösségépítés",
+        "description": "Ismerd meg az új embereket és építs tartós kapcsolatokat az ingázás során."
+      },
+      "safety": {
+        "title": "Biztonságos és Ellenőrzött",
+        "description": "Minden felhasználó ellenőrizve van a biztonságos telekocsi élményért."
+      }
+    },
+    "howItWorks": {
+      "title": "Hogyan működik?",
+      "step1": {
+        "title": "Hozz létre fiókot",
+        "description": "Regisztrálj percek alatt e-mail címeddel vagy telefonszámoddal."
+      },
+      "step2": {
+        "title": "Keress vagy ajánlj utat",
+        "description": "Keress elérhető utakat vagy hirdesd meg a sajátodat."
+      },
+      "step3": {
+        "title": "Utazzatok együtt",
+        "description": "Találkozz útitársaiddal és élvezd az utat!"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Üdv újra!",
+      "subtitle": "Jelentkezz be a fiókodba a folytatáshoz",
+      "email": "E-mail cím",
+      "emailPlaceholder": "Add meg az e-mail címed",
+      "password": "Jelszó",
+      "passwordPlaceholder": "Add meg a jelszavad",
+      "submit": "Bejelentkezés",
+      "forgotPassword": "Elfelejtetted a jelszavad?",
+      "noAccount": "Nincs még fiókod?",
+      "signUp": "Regisztrálj",
+      "errors": {
+        "invalidCredentials": "Hibás e-mail cím vagy jelszó",
+        "required": "Ez a mező kötelező",
+        "invalidEmail": "Kérjük, adj meg egy érvényes e-mail címet"
+      }
+    },
+    "register": {
+      "title": "Fiók létrehozása",
+      "subtitle": "Csatlakozz az ezrekhez, akik pénzt és a bolygót mentik",
+      "fullName": "Teljes név",
+      "fullNamePlaceholder": "Add meg a teljes neved",
+      "email": "E-mail cím",
+      "emailPlaceholder": "Add meg az e-mail címed",
+      "phoneNumber": "Telefonszám (opcionális)",
+      "phoneNumberPlaceholder": "+36 XX XXX XXXX",
+      "password": "Jelszó",
+      "passwordPlaceholder": "Hozz létre egy erős jelszót",
+      "passwordConfirm": "Jelszó megerősítése",
+      "passwordConfirmPlaceholder": "Erősítsd meg a jelszavad",
+      "submit": "Fiók létrehozása",
+      "hasAccount": "Már van fiókod?",
+      "signIn": "Jelentkezz be",
+      "errors": {
+        "required": "Ez a mező kötelező",
+        "invalidEmail": "Kérjük, adj meg egy érvényes e-mail címet",
+        "passwordMismatch": "A jelszavak nem egyeznek",
+        "passwordTooShort": "A jelszónak legalább 8 karakternek kell lennie",
+        "emailOrPhoneRequired": "E-mail cím vagy telefonszám megadása kötelező"
+      },
+      "success": "Fiók sikeresen létrehozva! Kérjük, jelentkezz be."
+    }
+  },
+  "dashboard": {
+    "title": "Irányítópult",
+    "welcome": "Üdv újra, {{name}}!",
+    "quickActions": {
+      "title": "Gyors műveletek",
+      "findRide": "Út keresése",
+      "offerRide": "Út ajánlása",
+      "myRides": "Utaim",
+      "messages": "Üzenetek",
+      "becomeDriver": "Legyél sofőr",
+      "becomeDriverHint": "Keress pénzt utak megosztásával"
+    },
+    "driverBanner": {
+      "title": "Szeretnél utakat ajánlani?",
+      "subtitle": "Legyél sofőr és keress pénzt ingázás közben",
+      "cta": "Sofőr leszek"
+    },
+    "driverStatus": {
+      "title": "Sofőr mód aktív",
+      "verified": "Ellenőrzött",
+      "trips": "út",
+      "underReviewTitle": "Sofőr jelentkezés ellenőrzés alatt",
+      "underReviewDesc": "Ellenőrizzük a dokumentumaid. Jelzünk, ha kész.",
+      "inactiveTitle": "A sofőr mód szünetel",
+      "inactiveDesc": "Aktiváld újra, hogy utakat ajánlhass."
+    },
+    "stats": {
+      "ridesCompleted": "Teljesített utak",
+      "moneySaved": "Megtakarított pénz",
+      "co2Saved": "Megtakarított CO₂"
+    },
+    "upcomingRides": {
+      "title": "Közelgő utak",
+      "empty": "Nincsenek közelgő utak. Keress vagy ajánlj utat a kezdéshez!"
+    }
+  },
+  "footer": {
+    "tagline": "Telekocsi Magyarország ⇆ Ausztria ingázóknak",
+    "copyright": "© {{year}} InGazo. Minden jog fenntartva."
+  },
+  "language": {
+    "select": "Nyelv kiválasztása",
+    "en": "English",
+    "hu": "Magyar",
+    "de": "Deutsch"
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "common": {
+    "appName": "InGazo",
+    "loading": "Laden...",
+    "error": "Ein Fehler ist aufgetreten",
+    "success": "Erfolgreich",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "submit": "Absenden",
+    "search": "Suchen",
+    "noResults": "Keine Ergebnisse gefunden",
+    "or": "oder"
+  },
+  "nav": {
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "profile": "Profil"
+  },
+  "profile": {
+    "verified": "Verifiziert",
+    "driver": "Fahrer",
+    "stats": {
+      "trips": "Fahrten",
+      "rating": "Bewertung",
+      "reviews": "Bewertungen"
+    },
+    "personalInfo": {
+      "title": "Persönliche Informationen",
+      "fullName": "Vollständiger Name",
+      "email": "E-Mail-Adresse",
+      "phone": "Telefonnummer",
+      "memberSince": "Mitglied seit"
+    },
+    "driver": {
+      "label": "Fahrer",
+      "title": "Fahrerstatus",
+      "active": "Du bist Fahrer",
+      "activeDesc": "Du kannst Fahrten für andere Pendler anbieten",
+      "inactive": "Fahrermodus pausiert",
+      "inactiveDesc": "Du erscheinst nicht in Angeboten, bis du reaktivierst.",
+      "activate": "Aktivieren",
+      "pause": "Pausieren",
+      "underReview": {
+        "title": "Überprüfung erforderlich",
+        "desc": "Danke für deine Bewerbung! Wir prüfen dein Fahrerprofil. Das dauert in der Regel 1-2 Werktage.",
+        "note": "Wir benachrichtigen dich, sobald die Verifizierung abgeschlossen ist."
+      },
+      "verified": "Verifiziert",
+      "bio": "Über dich",
+      "smoking": "Rauchen",
+      "pets": "Haustiere",
+      "luggage": "Gepäck",
+      "becomeTitle": "Werde Fahrer",
+      "becomeDesc": "Verdiene Geld durch das Teilen deines Pendelwegs. Biete Fahrten für Fahrgäste auf der gleichen Strecke an.",
+      "becomeButton": "Fahrer werden",
+      "manage": {
+        "title": "Fahrerprofil verwalten",
+        "button": "Fahrerprofil verwalten",
+        "licenseNumber": "Führerscheinnummer",
+        "licenseExpiry": "Führerschein-Ablaufdatum",
+        "bio": "Über dich",
+        "bioPlaceholder": "Erzähl den Fahrgästen kurz etwas über dich",
+        "preferences": "Präferenzen",
+        "smokingTitle": "Rauchen",
+        "smokingDesc": "Raucherfreundliche Fahrten erlauben",
+        "petsTitle": "Haustiere",
+        "petsDesc": "Haustiere an Bord erlauben",
+        "luggageTitle": "Gepäck",
+        "luggageDesc": "Größeres Gepäck erlauben",
+        "activeTitle": "Aktiver Status",
+        "activeDesc": "Sichtbarkeit für Fahrtanfragen umschalten",
+        "activeLocked": "nach Verifizierung verfügbar",
+        "updateError": "Fahrerprofil konnte nicht aktualisiert werden."
+      }
+    },
+    "security": {
+      "title": "Sicherheit",
+      "changePassword": "Passwort ändern",
+      "twoFactor": "Zwei-Faktor-Authentifizierung"
+    }
+  },
+  "becomeDriver": {
+    "title": "Werde Fahrer",
+    "subtitle": "Teile deinen Pendelweg und verdiene Geld",
+    "submit": "Fahrer werden",
+    "steps": {
+      "license": {
+        "title": "Führerscheindaten",
+        "subtitle": "Gib deine Führerscheindaten ein"
+      },
+      "preferences": {
+        "title": "Deine Präferenzen",
+        "subtitle": "Stelle deine Fahrpräferenzen ein"
+      },
+      "confirm": {
+        "title": "Details bestätigen",
+        "subtitle": "Überprüfe deine Informationen vor dem Absenden"
+      }
+    },
+    "fields": {
+      "licenseNumber": "Führerscheinnummer",
+      "licenseExpiry": "Führerschein-Ablaufdatum",
+      "bio": "Über dich",
+      "bioPlaceholder": "Erzähle den Fahrgästen etwas über dich..."
+    },
+    "preferences": {
+      "smoking": {
+        "title": "Rauchen erlaubt",
+        "desc": "Fahrgäste können in deinem Fahrzeug rauchen"
+      },
+      "pets": {
+        "title": "Haustiere erlaubt",
+        "desc": "Fahrgäste können Haustiere mitbringen"
+      },
+      "luggage": {
+        "title": "Gepäck erlaubt",
+        "desc": "Fahrgäste können großes Gepäck mitbringen"
+      }
+    },
+    "summary": {
+      "title": "Zusammenfassung",
+      "preferences": "Präferenzen"
+    },
+    "verification": {
+      "title": "Verifizierung erforderlich",
+      "desc": "Dein Profil wird von unserem Team überprüft. Dies dauert normalerweise 1-2 Werktage."
+    },
+    "errors": {
+      "licenseRequired": "Führerscheinnummer ist erforderlich",
+      "licenseExpiry": "Führerschein-Ablaufdatum ist erforderlich",
+      "failed": "Fahrerprofil konnte nicht erstellt werden. Bitte versuche es erneut."
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Fahrgemeinschaft Leicht Gemacht",
+      "subtitle": "Verbinde dich mit Pendlern zwischen Ungarn und Österreich. Spare Geld, reduziere Emissionen und finde neue Freunde.",
+      "cta": "Loslegen",
+      "secondaryCta": "Mehr erfahren"
+    },
+    "features": {
+      "title": "Warum InGazo?",
+      "subtitle": "Der klügste Weg zum grenzüberschreitenden Pendeln",
+      "costSaving": {
+        "title": "Geld sparen",
+        "description": "Teile Reisekosten und spare bis zu 75% bei deinem täglichen Pendeln."
+      },
+      "ecoFriendly": {
+        "title": "Umweltfreundlich",
+        "description": "Reduziere deinen CO₂-Fußabdruck durch gemeinsames Fahren."
+      },
+      "community": {
+        "title": "Gemeinschaft aufbauen",
+        "description": "Lerne neue Menschen kennen und baue dauerhafte Verbindungen beim Pendeln auf."
+      },
+      "safety": {
+        "title": "Sicher & Verifiziert",
+        "description": "Alle Nutzer sind für eine sichere Fahrgemeinschaftserfahrung verifiziert."
+      }
+    },
+    "howItWorks": {
+      "title": "So funktioniert's",
+      "step1": {
+        "title": "Konto erstellen",
+        "description": "Registriere dich in wenigen Minuten mit deiner E-Mail oder Telefonnummer."
+      },
+      "step2": {
+        "title": "Fahrt finden oder anbieten",
+        "description": "Suche nach verfügbaren Fahrten oder biete deine eigene an."
+      },
+      "step3": {
+        "title": "Gemeinsam reisen",
+        "description": "Triff deine Mitfahrer und genieße die Fahrt!"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Willkommen zurück",
+      "subtitle": "Melde dich bei deinem Konto an, um fortzufahren",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "Gib deine E-Mail ein",
+      "password": "Passwort",
+      "passwordPlaceholder": "Gib dein Passwort ein",
+      "submit": "Anmelden",
+      "forgotPassword": "Passwort vergessen?",
+      "noAccount": "Noch kein Konto?",
+      "signUp": "Registrieren",
+      "errors": {
+        "invalidCredentials": "Ungültige E-Mail oder Passwort",
+        "required": "Dieses Feld ist erforderlich",
+        "invalidEmail": "Bitte gib eine gültige E-Mail-Adresse ein"
+      }
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "subtitle": "Schließe dich Tausenden von Pendlern an, die Geld und den Planeten retten",
+      "fullName": "Vollständiger Name",
+      "fullNamePlaceholder": "Gib deinen vollständigen Namen ein",
+      "email": "E-Mail-Adresse",
+      "emailPlaceholder": "Gib deine E-Mail ein",
+      "phoneNumber": "Telefonnummer (optional)",
+      "phoneNumberPlaceholder": "+43 XXX XXX XXXX",
+      "password": "Passwort",
+      "passwordPlaceholder": "Erstelle ein starkes Passwort",
+      "passwordConfirm": "Passwort bestätigen",
+      "passwordConfirmPlaceholder": "Bestätige dein Passwort",
+      "submit": "Konto erstellen",
+      "hasAccount": "Hast du bereits ein Konto?",
+      "signIn": "Anmelden",
+      "errors": {
+        "required": "Dieses Feld ist erforderlich",
+        "invalidEmail": "Bitte gib eine gültige E-Mail-Adresse ein",
+        "passwordMismatch": "Passwörter stimmen nicht überein",
+        "passwordTooShort": "Passwort muss mindestens 8 Zeichen lang sein",
+        "emailOrPhoneRequired": "E-Mail oder Telefonnummer ist erforderlich"
+      },
+      "success": "Konto erfolgreich erstellt! Bitte melde dich an."
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Willkommen zurück, {{name}}!",
+    "quickActions": {
+      "title": "Schnellaktionen",
+      "findRide": "Fahrt finden",
+      "offerRide": "Fahrt anbieten",
+      "myRides": "Meine Fahrten",
+      "messages": "Nachrichten",
+      "becomeDriver": "Fahrer werden",
+      "becomeDriverHint": "Verdiene durch das Teilen von Fahrten"
+    },
+    "driverBanner": {
+      "title": "Möchtest du Fahrten anbieten?",
+      "subtitle": "Werde Fahrer und verdiene beim Pendeln",
+      "cta": "Fahrer werden"
+    },
+    "driverStatus": {
+      "title": "Fahrermodus aktiv",
+      "verified": "Verifiziert",
+      "trips": "Fahrten",
+      "underReviewTitle": "Fahrerbewerbung wird geprüft",
+      "underReviewDesc": "Wir prüfen deine Dokumente. Du wirst benachrichtigt, sobald du verifiziert bist.",
+      "inactiveTitle": "Fahrermodus ist pausiert",
+      "inactiveDesc": "Reaktiviere, um Fahrten anzubieten und gefunden zu werden."
+    },
+    "stats": {
+      "ridesCompleted": "Abgeschlossene Fahrten",
+      "moneySaved": "Gespartes Geld",
+      "co2Saved": "Eingespartes CO₂"
+    },
+    "upcomingRides": {
+      "title": "Kommende Fahrten",
+      "empty": "Keine kommenden Fahrten. Finde oder biete eine Fahrt an!"
+    }
+  },
+  "footer": {
+    "tagline": "Fahrgemeinschaft für Ungarn ⇆ Österreich Pendler",
+    "copyright": "© {{year}} InGazo. Alle Rechte vorbehalten."
+  },
+  "language": {
+    "select": "Sprache auswählen",
+    "en": "English",
+    "hu": "Magyar",
+    "de": "Deutsch"
+  }
+}
